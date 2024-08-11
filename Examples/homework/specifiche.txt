@@ -1,0 +1,40 @@
+descrizione degli agenti:
+
+Agente1: 
+- ruolo manager
+- numero di Agenti = 1
+- goal guadagnare una somma.
+- attività cercare oggetti, vendere oggetti ad Agent2, comunicare con Agent2.
+descrizione variabili in possesso di Agente1.
+- oggetto da vendere
+- soldi accumulati
+- proposte ottenute
+descrizione vendita:
+1. vendita avviene se abbiamo un oggetto da vendere altrimenti si va a cercarlo.
+2. se abbiamo un oggetto avviene la comunicazione agli altri agenti.
+3. per iniziare l'asta gli agenti devono comunicare la loro prontezza in un certo tempo t.
+4. l'asta comincia se un certo numero di utenti ha accettato.
+5. avviene la comunicazione del oggetto, prezzo e rarità a Agent1
+6. l'asta avviene in modalità second best price win. 
+7. dopo fine dell'asta si ritorna al punto 1
+descrizione cercare oggetti:
+1. va in giro e cerca,
+2. può trovare qualcosa con una probabilità.
+3. quando trova qualcosa può essere di valore o spazzatura.
+4. oggetti di valore hanno una rarità e un prezzo iniziale.
+5. quando si trova qualcosa di valore si va alla vendita
+
+Agente2:
+- ruolo cliente
+- numero di Agenti = N
+- goal avere almeno 1 oggetto.
+- attività comunicazione con Agent1, acquisto oggetti da Agent1
+descrizione variabili in possesso di Agente2:
+- lista di oggetti acquisti
+- soldi rimasti
+- proposta per l'oggetto (random tra il prezzo iniziale e gli soldi rimasti) 
+descrizione acquisto:
+1. alla ricezione del messaggio di invito all'asta risponde se ha ancora i soldi
+2. stima il valore dell'oggetto
+3. invio della stima.
+4. nel caso della vincita, pagamento del oggetto e aggiunta del oggetto alla lista

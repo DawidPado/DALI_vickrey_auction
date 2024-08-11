@@ -1,0 +1,99 @@
+:- use_module(library(random)).
+:- dynamic object_to_sell/3.
+:- dynamic portafoglio/1.
+:- dynamic gain_goal/1.
+:- dynamic responds/1.
+:- dynamic proposal/2.
+:- assert(portafoglio(0)), assert(gain_goal(0)),  assert(responds(0)), write('Agent1: Portafoglio value: 0'), nl.
+
+
+
+gainE(X):>
+	gain_goal(Y),
+	retract(gain_goal(Y)),
+    assert(gain_goal(X)),
+	wake_up([agent2, agent3]),
+	workA.
+
+wake_up([]).
+wake_up([Agent|Agents]) :-
+    messageA(Agent, execute_proc(wake_up, Me)),
+    wake_up(Agents).
+
+
+workI:- gainP,startA.
+workI:> gain_goal(Y), portafoglio(X), X<Y, not(object_to_sell(N,R,P)), !, findA, workA, nl.
+workI:> gain_goal(Y), portafoglio(X), X<Y, object_to_sell(N,R,P),!, start_auctionA, nl.
+workI:> write('Gain reached!'),nl.
+
+
+findI:- startP.
+findI:> write('Searching for items'), nl,
+    random(1, 100, Prob),
+    (Prob < 50 ->
+        random(1, 100, ValueProb),
+        (ValueProb < 70 ->
+            random(1, 3, Rarity),
+            random(100, 1000, Price),
+			assert(object_to_sell(item, Rarity, Price)),
+            format('Found a valuable item Rarity: ~w, Price: ~w~n', [Rarity, Price])
+        ;
+            write('Found trash'), nl
+        )
+    ;
+        write('Found nothing'), nl
+    ),
+	object_to_sell(N, R, Price).
+
+start_auctionI:- 
+	object_to_sell(Name,Rarity,Price),
+    write('Starting auction for item '), nl,
+    send_auction_invitations([agent2, agent3], Name, Rarity, Price),
+	write('invitations send'), nl.
+	
+send_auction_invitations([], _, _, _).
+send_auction_invitations([Agent|Agents], Name, Rarity, Price) :-
+    messageA(Agent, send_message(new_item(Name, Rarity, Price),Me)),
+    send_auction_invitations(Agents, Name, Rarity, Price).
+	
+
+	
+im_inE(Agent, Proposal):> format('respond recived from ~w, ~w euro ~n', [Agent, Proposal]),
+	responds(R), NewR is R + 1, retract(responds(R)), assert(responds(NewR)),
+	assert(proposal(Agent, Proposal)),
+	NewR=2,
+	findall(Bid, proposal(_, Bid), Bids),
+	format('Bids: ~w, count: ~w~n', [Bids, NewR]),
+	sellA.
+
+exclude_max(M,[],[]):- !.
+exclude_max(M, [M|T], R) :- exclude_max(M, T, R).
+exclude_max(M, [H|T], [H|R]) :- H \= M, exclude_max(M, T, R).
+
+max_list([], Max, Max).
+max_list([H|T], Max) :- max_list(T, H, Max).
+max_list([H|T], Acc, Max) :- H > Acc, max_list(T, H, Max).
+max_list([H|T], Acc, Max) :-  H =< Acc, max_list(T, Acc, Max).
+
+sellI:- startP, responds(R), format('~w num of partecipant', [R]), nl.
+sellI:> 
+	responds(Re),
+	format('~w num of partecipant', [Re]), nl,
+	findall(Bid, proposal(_, Bid), Bids),
+	max_list(Bids, HighestBid),
+	exclude_max(HighestBid, Bids, RemainingBids),
+	max_list(RemainingBids, SecondPrice),
+	proposal(Winner, SecondPrice),
+	object_to_sell(N, R, P),
+	messageA(Winner, send_message(win(N, R, SecondPrice),Me)),
+	format('~w sold to ~w for ~w!', [N, Winner, SecondPrice]), nl,
+	retract(object_to_sell(N,_,_)),
+	portafoglio(CurrentValue),
+    NewValue is CurrentValue + SecondPrice,
+    retract(portafoglio(CurrentValue)),
+    assert(portafoglio(NewValue)),
+	portafoglio(V),
+	format('portafoglio value: ~w~n~n', [V]),
+	retract(responds(Re)), assert(responds(0)),
+	retractall(proposal(_, _)),
+	workA.

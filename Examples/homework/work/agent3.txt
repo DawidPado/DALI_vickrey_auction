@@ -1,0 +1,35 @@
+:- use_module(library(random)).
+
+:- dynamic objects/3.
+:- dynamic portafoglio/1.
+:- dynamic desired_objects/1.
+:- assert(portafoglio(0)), assert(desired_objects(0)).
+
+
+need(O):- desired_objects(D), portafoglio(P), D>0, P>=O.
+
+new_itemE(N,R,P):> 
+	format('item proposed:~w - Rarity: ~w, Price: ~w~n', [N, R, P]),
+	Max_offer is P+100,
+	random(P, Max_offer, Offer),
+	need(Offer),
+	format('I offer:~w ', [Offer]),
+	messageA(agent1,send_message(im_in(agent3,Offer),Me)).
+	
+
+winE(N,R, P) :- format('I won:~w, with rarity ~w at price ~w~n', [N, R, P]),
+	portafoglio(X), Y is X-P,
+	desired_objects(X1), Y1 is X1-1,
+	retract(portafoglio(X)),
+	assert(portafoglio(Y)),
+	retract(desired_objects(X1)),
+	assert(desired_objects(Y1)),
+	format('I have:~w euro and i want ~w objects.~n~n', [Y, Y1]).
+	
+	
+wake_up:- write('inizio'), nl,
+	portafoglio(CurrentValue),
+	desired_objects(CurrentObjects),
+	retract(portafoglio(CurrentValue)),retract(desired_objects(CurrentObjects)),
+	random(1000, 5000, P), assert(portafoglio(P)), random(1, 5, D), assert(desired_objects(D)),
+	format('I have:~w euro and i want ~w objects ~n', [P,D]).
