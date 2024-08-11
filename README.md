@@ -1,5 +1,5 @@
-# DALI
-> DALI Multi Agent Systems Framework
+# DALI Vickrey Auction
+> Based on DALI Multi Agent Systems Framework
 
 DALI is a meta interpreter built on top of Sicstus Prolog (R) (_at the moment_).
 
@@ -15,25 +15,10 @@ You may use any latest SICStus version, but DALI has been tested to work well wi
 * GNU/Linux:  https://sicstus.sics.se/sicstus/products4/sicstus/4.6.0/binaries/linux/sp-4.6.0-x86_64-linux-glibc2.17.tar.gz
 * Windows: https://sicstus.sics.se/sicstus/products4/sicstus/4.6.0/binaries/win32/InstallSICStus-4.6.0-x64-VC16.exe
 
-Also some OS-specific isntructions:
-
-**OS X & Linux:**
-
-You can download DALI and test it by running an example DALI MAS:
-```sh
-git clone https://github.com/AAAI-DISIM-UnivAQ/DALI.git
-cd DALI/Examples/advanced
-bash startmas.sh
-```
-&nbsp;&nbsp;&nbsp;&nbsp; You will see different windows opening:
-* &nbsp;&nbsp;&nbsp;&nbsp; Prolog LINDA server (active_server_wi.pl)
-* &nbsp;&nbsp;&nbsp;&nbsp; Prolog FIPA client (active_user_wi.pl) 
-* &nbsp;&nbsp;&nbsp;&nbsp; 1 instance of DALI metaintepreter for each agent (active_dali_wi.pl)
-
 **Windows:**
 
-You can download DALI from https://github.com/AAAI-DISIM-UnivAQ/DALI.git.
-*  Unzip the repository, go to the folder "DALI/Examples/basic", and test if DALI works by duble clicking "startmas.bat" file (this will launch an example DALI MAS). \
+You can download DALI Vickrey Auction from https://github.com/DawidPado/DALI_vickrey_auction.
+*  Unzip the repository, go to the folder "DALI/Examples/homework", and test it by duble clicking "startmas.bat". \
 \
 &nbsp;&nbsp;&nbsp;&nbsp; You will see different windows opening:
 * &nbsp;&nbsp;&nbsp;&nbsp; Prolog LINDA server (active_server_wi.pl)
@@ -42,11 +27,10 @@ You can download DALI from https://github.com/AAAI-DISIM-UnivAQ/DALI.git.
 
 
 ## Usage example
-
-You can find some examples into the Example folder, where examples are divided into 3 subfolders:
-* __basic__: aimed at basic Windows-based setup, no agent types, every agent living in a separated sicstus window.
-* __advanced__: more complex, aimed at Unix-like based environment, with agent type, instances, each agent living in a separated xterm console.
-* __more__: MAS examples derived from our students projects.
+Once the communication window is open, enter the following commands:
+* agent1.
+* me.
+* send_message(gain(1000), me).
 
 
 ## Development setup
@@ -86,7 +70,7 @@ To complete
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
 
-## Examples of Applications:
+## Examples of other Applications:
 
 * in Robotics: coordination among store delivery robots: [Video](https://youtu.be/1dfWthhUovk) from S. Valentini:
    [![Delivery robots cordination](https://img.youtube.com/vi/1dfWthhUovk/0.jpg)](https://www.youtube.com/watch?v=1dfWthhUovk)
